@@ -1,5 +1,5 @@
-import fetchMovie from './movieServise.js';
-import './css/styles.css';
+import fetchMovie from "./movieService"
+import './sass/main.scss';
 import debounce from 'lodash.debounce';
 import movieItem from './templates/movieItem.hbs';
 
