@@ -1,23 +1,49 @@
-import fetchMovie from './movieService';
+import fetchMovie from './movieServise.js';
+import './css/styles.css';
 import debounce from 'lodash.debounce';
-import movieItem from './templates/movieItem.hbs'
+import movieItem from './templates/movieItem.hbs';
 
-const input = document.querySelector('.input');
-const list = document.querySelector('.list');
 
-input.addEventListener('input', debounce(getMovie, 500));
+const inputEl = document.querySelector('.input');
+const listEl = document.querySelector('ul');
+const btnLoad = document.querySelector('button');
 
+let inputValue = '';
+let page = 1;
+
+inputEl.addEventListener('input', debounce(getMovie, 300));
+btnLoad.addEventListener('click', loadMore);
 function getMovie() {
-    const inputValue = input.value;
-    fetchMovie(inputValue).then(data => createMarkup(data.results))
+  inputValue = inputEl.value;
+  listEl.innerHTML = '';
+  btnLoad.style.display = 'none';
+  page = 1;
+  if (inputValue.trim() === '') return;
+  fetchMovie(inputValue)
+    .then(data => {
+      createMarkup(data.results)
+      return data
+    })
+    .then(data => {
+      if (!data.results.length) {
+        console.log('return')
+        btnLoad.style.display = 'none';
+        return
+      }
+      btnLoad.style.display = 'inline-block'
+
+    })
+
 }
 
 function createMarkup(array) {
-    // const list = document.createElement("ul");
-    // document.body.append(list);
-    // const markup = movieItem(array);
-    // document.querySelector("ul").insertAdjacentHTML('beforeend', markup) 
+  const markup = movieItem(array);
+  listEl.insertAdjacentHTML('beforeend', markup);
+}
 
-    const markup = movieItem(array);
-    list.insertAdjacentHTML('beforeend', markup) 
+function loadMore() {
+  page += 1;
+  fetchMovie(inputValue, page)
+    .then(data => createMarkup(data.results))
+
 }
