@@ -6,6 +6,7 @@ const input = document.querySelector('.input');
 const list = document.querySelector('.list');
 
 input.addEventListener('input', debounce(getMovie, 500));
+
 function getMovie() {
     const inputValue = input.value;
     fetchMovie(inputValue).then(data => createMarkup(data.results))
