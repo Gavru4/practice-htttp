@@ -1,8 +1,7 @@
-import fetchMovie from "./movieService"
+import fetchMovie from './movieService';
 import './sass/main.scss';
 import debounce from 'lodash.debounce';
 import movieItem from './templates/movieItem.hbs';
-
 
 const inputEl = document.querySelector('.input');
 const listEl = document.querySelector('ul');
@@ -21,19 +20,17 @@ function getMovie() {
   if (inputValue.trim() === '') return;
   fetchMovie(inputValue)
     .then(data => {
-      createMarkup(data.results)
-      return data
+      createMarkup(data.results);
+      return data;
     })
     .then(data => {
       if (!data.results.length) {
-        console.log('return')
+        console.log('return');
         btnLoad.style.display = 'none';
-        return
+        return;
       }
-      btnLoad.style.display = 'inline-block'
-
-    })
-
+      btnLoad.style.display = 'inline-block';
+    });
 }
 
 function createMarkup(array) {
@@ -43,7 +40,6 @@ function createMarkup(array) {
 
 function loadMore() {
   page += 1;
-  fetchMovie(inputValue, page)
-    .then(data => createMarkup(data.results))
-
+  fetchMovie(inputValue, page).then(data => createMarkup(data.results));
 }
+console.log(data.results);
